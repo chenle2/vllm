@@ -60,6 +60,7 @@ def create_scheduler(
     use_ec_connector: bool = False,
     ec_role: str | None = None,
     use_v2_model_runner: bool | None = None,
+    scheduler_cls: type[Scheduler] | None = None,
 ) -> Scheduler | AsyncScheduler:
     """Create scheduler under test.
 
@@ -166,8 +167,8 @@ def create_scheduler(
     )
     cache_config.num_gpu_blocks = num_blocks
     register_all_kvcache_specs(vllm_config)
-    scheduler_cls = AsyncScheduler if async_scheduling else Scheduler
-    scheduler = scheduler_cls(
+    cls = scheduler_cls or (AsyncScheduler if async_scheduling else Scheduler)
+    scheduler = cls(
         vllm_config=vllm_config,
         kv_cache_config=kv_cache_config,
         block_size=block_size,
