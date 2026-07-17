@@ -108,3 +108,24 @@ If you use vLLM for your research, please cite our [paper](https://arxiv.org/abs
 ## Media Kit
 
 - If you wish to use vLLM's logo, please refer to [our media kit repo](https://github.com/vllm-project/media-kit)
+
+# vLLM baseline
+python -m vllm.entrypoints.openai.api_server \
+  --model /path/to/model \
+  --served-model-name llama \
+  --no-async-scheduling
+
+# vLLM Chameleon
+VLLM_CHAMELEON_SCENARIO=agent python -m vllm.entrypoints.openai.api_server \
+  --model /path/to/model \
+  --served-model-name llama \
+  --no-async-scheduling \
+  --scheduler-cls vllm.v1.core.sched.chameleon_scheduler.ChameleonScheduler
+
+# Run Trace
+python benchmarks/benchmark_agent_closed_loop.py \
+  --trace /home/chenle/llm-engine/VTC-artifact-llama3/agent_closed_loop.pkl \
+  --server http://localhost:8000 \
+  --model llama \
+  --ignore-eos \
+  --output results/vllm_agent_chameleon.jsonl

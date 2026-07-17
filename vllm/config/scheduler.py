@@ -178,6 +178,7 @@ class SchedulerConfig:
         return SchedulerConfig(**kwargs)
 
     def get_scheduler_cls(self) -> type["SchedulerInterface"]:
+        print(f"[cl] Scheduler class: {self.scheduler_cls}")
         if self.scheduler_cls is None:
             if self.async_scheduling:
                 from vllm.v1.core.sched.async_scheduler import AsyncScheduler
